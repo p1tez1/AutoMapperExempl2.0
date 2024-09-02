@@ -1,7 +1,9 @@
-﻿using System;
-using AutoMapper;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using AutoMapper;
+using Newtonsoft;
+using System.Text.Json;
+
 
 namespace Markiian
 {
@@ -9,10 +11,11 @@ namespace Markiian
     {
         static void Main(string[] args)
         {
+            
             var host = CreateHostBuilder(args).Build();
             var mapper = host.Services.GetRequiredService<IMapper>();
 
-            Empoyee emp = new Empoyee()
+            Employee emp = new Employee()
             {
                 Name = "Markiian",
                 LastName = "Pytel",
@@ -21,24 +24,16 @@ namespace Markiian
                 Selery = 300
             };
 
-            EmployeeDTO empDTO = new EmployeeDTO()
-            {
-                IdPerosne = Guid.NewGuid(),
-                Company = "Epam",
-                BirthDay = new DateTime(2003, 1, 16),
-                Spetialization = "Embeded",
-                AverageSelery = 0,
-            };
+            EmployeeDTO empDTO = mapper.Map<EmployeeDTO>(emp);
+            string jsonString = JsonSerializer.Serialize(empDTO);
 
-            Console.WriteLine($"IdPerosne: {empDTO.IdPerosne}\nCompany: {empDTO.Company}\nBirthDay: {empDTO.BirthDay.ToShortDateString()}\nBestPosition: {empDTO.Spetialization}\nAverageSelery: {empDTO.AverageSelery}");
+            Console.WriteLine(jsonString);
+            
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureServices((context, services) =>
-                {
-                    services.AddAutoMapper(typeof(Program));
-                    services.AddTransient<MappingProfile>();
-                });
+                .ConfigureServices((_, services) =>
+                    services.AddAutoMapper(typeof(Program).Assembly));
     }
 }

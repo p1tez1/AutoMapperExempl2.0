@@ -8,11 +8,11 @@ namespace Markiian
 {
     public class EmployeeDTO
     {
-        public Guid IdPerosne { get; set; }
-        public string Company { get; set; }
-        public DateTime BirthDay { get; set; }
+        public string FullName { get; set; }
+        public string NicName { get; set; }
+        public int BirthDay { get; set; }
         public string Spetialization { get; set; }
-        public double AverageSelery { get; set; }
+        public double BestSelery { get; set; }
 
     }
 }
