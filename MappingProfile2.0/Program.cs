@@ -24,6 +24,7 @@ namespace Markiian
                 Selery = 300
             };
 
+
             EmployeeDTO empDTO = mapper.Map<EmployeeDTO>(emp);
             string jsonString = JsonSerializer.Serialize(empDTO);
 
